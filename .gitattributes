@@ -21,8 +21,8 @@
 *.cmd text eol=crlf
 *.bat text eol=crlf
 
-# This SDK bootstrap is a Bash/CMD polyglot; let core.autocrlf choose EOL per platform.
-jetbrains/dotnet-sdk.cmd text=auto -eol
+# This SDK bootstrap is a Bash/CMD polyglot; Bash on Linux requires LF even when core.autocrlf is enabled.
+jetbrains/dotnet-sdk.cmd text eol=lf
 
 *.cs text=auto diff=csharp
 *.vb text=auto
