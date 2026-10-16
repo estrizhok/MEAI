@@ -4,7 +4,7 @@
     <JbForkRevision Condition="'$(JbForkRevision)' == ''">1</JbForkRevision>
 
     <!-- Keep the Microsoft package ID so existing PackageReferences still resolve this binary; use a fork-only stable package version. -->
-    <PackageVersion>$([System.Version]::Parse('$(VersionPrefix)').Major).$([System.Version]::Parse('$(VersionPrefix)').Minor).$([MSBuild]::Add($([System.Version]::Parse('$(VersionPrefix)').Build), 1)).$(JbForkRevision)</PackageVersion>
+    <PackageVersion>$([System.Version]::Parse('$(VersionPrefix)').Major).$([System.Version]::Parse('$(VersionPrefix)').Minor).$([System.Version]::Parse('$(VersionPrefix)').Build).$(JbForkRevision)</PackageVersion>
 
     <!-- Removing net9.0 makes its baseline compare to the compatible net8.0 asset. -->
     <CompatibilitySuppressionFilePath>$(JbForkDir)CompatibilitySuppressions.xml</CompatibilitySuppressionFilePath>
