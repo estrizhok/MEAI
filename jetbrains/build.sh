@@ -29,8 +29,8 @@ build() {
 }
 
 pack() {
+  rm -rf "$out/packages"
   mkdir -p "$out/packages"
-  rm -f "$out"/packages/Microsoft.Extensions.AI.Abstractions.*.nupkg
   run_dotnet pack "$project" -c Release --no-build --no-restore -o "$out/packages" "${args[@]}" "$@"
 }
 

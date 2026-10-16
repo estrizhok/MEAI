@@ -18,14 +18,12 @@ import xml.etree.ElementTree as ET
 package_dir, revision = sys.argv[1:]
 namespace = {'n': 'http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd'}
 matches = []
-for package in glob.glob(os.path.join(package_dir, 'Microsoft.Extensions.AI.Abstractions.*.nupkg')):
-    if package.endswith('.symbols.nupkg'):
-        continue
+for package in glob.glob(os.path.join(package_dir, 'JetBrains.Microsoft.Extensions.AI.Abstractions.*.nupkg')):
     with zipfile.ZipFile(package) as archive:
         nuspec = next(name for name in archive.namelist() if name.endswith('.nuspec'))
         root = ET.fromstring(archive.read(nuspec))
         metadata = root.find('n:metadata', namespace)
-        if metadata is None or metadata.findtext('n:id', namespaces=namespace) != 'Microsoft.Extensions.AI.Abstractions':
+        if metadata is None or metadata.findtext('n:id', namespaces=namespace) != 'JetBrains.Microsoft.Extensions.AI.Abstractions':
             continue
         version = metadata.findtext('n:version', namespaces=namespace)
         components = version.split('.') if version else []
@@ -62,7 +60,7 @@ with zipfile.ZipFile(package) as archive:
     root = ET.fromstring(archive.read(nuspec_name))
     metadata = root.find('n:metadata', namespace)
     assert metadata is not None
-    assert metadata.findtext('n:id', namespaces=namespace) == 'Microsoft.Extensions.AI.Abstractions'
+    assert metadata.findtext('n:id', namespaces=namespace) == 'JetBrains.Microsoft.Extensions.AI.Abstractions'
     assert metadata.findtext('n:version', namespaces=namespace) == expected_version
 
     groups = {

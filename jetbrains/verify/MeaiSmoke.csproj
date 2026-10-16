@@ -6,7 +6,7 @@
     <ImplicitUsings>disable</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.AI.Abstractions" Version="$(MeaiPackageVersion)" />
+    <PackageReference Include="JetBrains.Microsoft.Extensions.AI.Abstractions" Version="$(MeaiPackageVersion)" />
     <PackageReference Include="System.Text.Json" Version="8.0.6" />
   </ItemGroup>
 </Project>

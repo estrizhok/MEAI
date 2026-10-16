@@ -1,16 +1,23 @@
 <Project>
-  <PropertyGroup>
+  <PropertyGroup Condition="'$(MSBuildProjectName)' == 'Microsoft.Extensions.AI.Abstractions'">
     <JbForkDir>$(MSBuildThisFileDirectory)</JbForkDir>
     <JbForkRevision Condition="'$(JbForkRevision)' == ''">1</JbForkRevision>
+    <JbUpstreamPackageId Condition="'$(JbUpstreamPackageId)' == '' and '$(PackageId)' != ''">$(PackageId)</JbUpstreamPackageId>
+    <JbUpstreamPackageId Condition="'$(JbUpstreamPackageId)' == ''">$(MSBuildProjectName)</JbUpstreamPackageId>
+    <PackageId Condition="'$(PackageId)' != 'JetBrains.$(JbUpstreamPackageId)'">JetBrains.$(JbUpstreamPackageId)</PackageId>
 
-    <!-- Keep the Microsoft package ID so existing PackageReferences still resolve this binary; use a fork-only stable package version. -->
+    <!-- Keep the upstream release prefix and append a TeamCity-controlled fork revision. -->
     <PackageVersion>$([System.Version]::Parse('$(VersionPrefix)').Major).$([System.Version]::Parse('$(VersionPrefix)').Minor).$([System.Version]::Parse('$(VersionPrefix)').Build).$(JbForkRevision)</PackageVersion>
+    <PackageValidationBaselineName>$(JbUpstreamPackageId)</PackageValidationBaselineName>
+
+    <!-- Keep symbols in a separate .snupkg so the regular .nupkg glob selects only the installable package. -->
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
 
     <!-- Removing net9.0 makes its baseline compare to the compatible net8.0 asset. -->
     <CompatibilitySuppressionFilePath>$(JbForkDir)CompatibilitySuppressions.xml</CompatibilitySuppressionFilePath>
   </PropertyGroup>
 
-  <Target Name="JbCheckPackageVersion" BeforeTargets="GenerateNuspec" Condition="'$(IsPackable)' == 'true'">
+  <Target Name="JbCheckPackageVersion" BeforeTargets="GenerateNuspec" Condition="('$(MSBuildProjectName)' == 'Microsoft.Extensions.AI.Abstractions') and ('$(IsPackable)' == 'true')">
     <Error Condition="$(PackageVersion.Split('.').Length) != 4 or $(PackageVersion.Contains('-')) or $(PackageVersion.StartsWith('0.')) or $(PackageVersion.Contains('.0.')) or $(PackageVersion.EndsWith('.0'))" Text="The JetBrains MEAI package version $(PackageVersion) must be stable and have four nonzero components." />
   </Target>
 </Project>
